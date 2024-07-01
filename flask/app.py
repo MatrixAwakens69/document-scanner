@@ -4,8 +4,12 @@ import cv2
 import numpy as np
 from PIL import Image
 import io
+from flask_cors import CORS
+
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/scan', methods=['POST'])
 def scan_document():

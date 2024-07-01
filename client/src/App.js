@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./App.css";
 
 function App() {
   const [selectedFile, setSelectedFile] = useState();
@@ -22,11 +21,27 @@ function App() {
   };
 
   return (
-    <div className="App">
+    <div className="App min-h-screen bg-gray-800 flex justify-center items-center">
       <header className="App-header">
-        <form onSubmit={handleSubmit}>
-          <input type="file" onChange={handleFileChange} />
-          <button type="submit">Scan Document</button>
+        <form
+          onSubmit={handleSubmit}
+          className="bg-blue-300 shadow-md rounded px-8 pt-6 pb-8 mb-4"
+        >
+          <div className="mb-4">
+            <input
+              type="file"
+              onChange={handleFileChange}
+              className="shadow border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            />
+          </div>
+          <div className="flex items-center justify-between">
+            <button
+              type="submit"
+              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              Scan Document
+            </button>
+          </div>
         </form>
       </header>
     </div>
