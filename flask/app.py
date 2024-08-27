@@ -24,10 +24,21 @@ def scan_document():
 
     # Convert PIL Image to a format pytesseract can understand
     image = np.array(image)  # Convert PIL Image to numpy array
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)  # Convert to RGB
+    # image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)  # Convert to RGB
+
+    # Preprocessing for better accuracy
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
+    gaussBlur = cv2.GaussianBlur(thresh, (3, 3), 0)
+    highres = cv2.resize(gaussBlur, None, fx=1.5, fy=1.5, interpolation=cv2.INTER_LINEAR)
+
+    # Morphological transformations
+    kernel = np.ones((2, 2), np.uint8)
+    dilated = cv2.dilate(highres, kernel, iterations=1)
+    eroded = cv2.erode(dilated, kernel, iterations=1)
 
     # Use pytesseract to do OCR on the image
-    text = pytesseract.image_to_string(image)
+    text = pytesseract.image_to_string(eroded)
     return jsonify({'text': text})
 
 if __name__ == '__main__':
